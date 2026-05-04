@@ -277,7 +277,7 @@ function connect() {
   ws = new WebSocket(`${proto}//${location.host}`);
   ws.onopen = () => {
     document.getElementById('conn-status').classList.remove('show');
-    helloAcked = false;
+    helloAcked = true;
     send('hello', { sessionId: SESSION_ID });
   };
   ws.onmessage = e => dispatch(JSON.parse(e.data));
@@ -288,7 +288,7 @@ function connect() {
   ws.onerror = () => { try { ws.close(); } catch {} };
 }
 function send(type, payload = {}) {
-  if (ws?.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type, payload }));
+  if (ws?.readyState === WebSocket.OPEN) ws.send(JSON.stringify({ type, payload, sessionId: SESSION_ID }));
 }
 
 // Heartbeat
